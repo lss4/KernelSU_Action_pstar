@@ -161,7 +161,7 @@ jobs:
       run: |
         cd $GITHUB_WORKSPACE/kernel_workspace
         git clone ${{ env.KERNEL_SOURCE }} -b ${{ env.KERNEL_SOURCE_BRANCH }} android-kernel --depth=1
-        (cd android-kernel && patch -p1 < patches/cgroup.patch && patch -p1 < patches/xt_qtaguid.patch)
+        (cd android-kernel && patch -p1 < patches/cgroup.patch && patch -p1 < patches/xt_qtaguid.patch && patch -p1 < patches/nowarnings.patch)
 
     - name: Download source boot image
       if: env.BUILD_BOOT_IMG == 'true'
