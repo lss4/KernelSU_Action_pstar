@@ -1,4 +1,4 @@
-name: (pstar) (LineageOS 20) (KernelSU) Build Kernel
+name: (pstar) (LineageOS 20) (docker lxc) Build Kernel
 on:
   watch:
     types: [started]
