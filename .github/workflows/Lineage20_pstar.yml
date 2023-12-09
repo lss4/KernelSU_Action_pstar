@@ -162,6 +162,17 @@ jobs:
         cd $GITHUB_WORKSPACE/kernel_workspace
         git clone ${{ env.KERNEL_SOURCE }} -b ${{ env.KERNEL_SOURCE_BRANCH }} android-kernel --depth=1
 
+    - name: Apply Patches
+      run: |
+        cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
+        echo "------------ Patches for Remove Kernel Validation ------------"
+        find arch/arm64/configs/vendor/ -type f -name "*_defconfig" -exec sh -c 'export defconfig_path={} && sed "s@<device_defconfig>@$defconfig_path@g" patches/general_defconfig.patch | patch -p1 ' \;
+        patch -p1 < patches/module.patch
+        echo "------------ Patches for remove warning ----------------------"
+        patch -p1 < patches/nowarnings.patch
+        # echo "------------ Patches for lxc and docker ----------------------"
+        # patch -p1 < patches/cgroup.patch && patch -p1 < patches/xt_qtaguid.patch 
+
     - name: Download source boot image
       if: env.BUILD_BOOT_IMG == 'true'
       run: |
