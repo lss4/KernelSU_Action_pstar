@@ -174,7 +174,7 @@ jobs:
         patch -p1 < patches/cgroup.patch && patch -p1 < patches/xt_qtaguid.patch 
 
     - name: Download source boot image
-      if: env.BUILD_BOOT_IMG == 'true'  
+      if: env.BUILD_BOOT_IMG == 'true'
       run: |
         cd $GITHUB_WORKSPACE/kernel_workspace
         wget -O boot-source.img ${{ env.SOURCE_BOOT_IMAGE }}
