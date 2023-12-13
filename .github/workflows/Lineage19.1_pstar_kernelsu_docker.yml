@@ -170,6 +170,7 @@ jobs:
 
     - name: Apply Patches
       run: |
+        cd $GITHUB_WORKSPACE/kernel_workspace
         (cd android-kernel && git apply docker.patch)
 
     - name: Download source boot image
