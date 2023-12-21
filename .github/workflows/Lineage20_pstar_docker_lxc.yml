@@ -213,6 +213,109 @@ jobs:
         git clone https://gitlab.com/kalilinux/nethunter/build-scripts/kali-nethunter-kernel.git --depth=1
         echo "------------ Patches for kali nethunter ----------------------------------------------------"
         find kali-nethunter-kernel/patches/${{ env.Kernel_Version }}/  -type f -name "*.patch" -exec  sh -c 'git apply {}' \;
+        echo "------------ Add Kernel Config required by Kali --------------------------------------------"
+        scripts/config --file arch/${{ env.ARCH }}/configs/${{ env.KERNEL_CONFIG }} \
+        # Configuring the Kernel - General (https://www.kali.org/docs/nethunter/nethunter-kernel-2-config-1)
+        # General (ignore set “Default host name” to “kali”)
+        -e CONFIG_SYSVIPC \
+        # Modules
+        -e CONFIG_MODULES \
+        -e CONFIG_MODULE_UNLOAD \
+        -e CONFIG_MODULE_FORCE_UNLOAD \
+        -e CONFIG_MODVERSIONS \
+        # Kernel Image
+        -e CONFIG_BUILD_ARM64_APPENDED_DTB_IMAGE \
+        -e IMG_GZ_DTB \
+        # Configuring the Kernel - Network (https://www.kali.org/docs/nethunter/nethunter-kernel-3-config-2/)
+        # Bluetooth
+        -e CONFIG_BT_HCIBTUSB \
+        -e CONFIG_BT_HCIBTUSB_BCM \
+        -e CONFIG_BT_HCIBTUSB_RTL \
+        -e CONFIG_BT_HCIUART \
+        -e CONFIG_BT_HCIUART_H4 \
+        -e CONFIG_BT_HCIBCM203X \
+        -e CONFIG_BT_HCIBPA10X \
+        -e CONFIG_BT_HCIBFUSB \
+        -e CONFIG_BT_HCIVHCI \
+        # Android Binder IPC Driver
+        -e CONFIG_ANDROID_BINDER_IPC \
+        # MAC80211
+        -e CONFIG_CFG80211_WEXT \
+        -e CONFIG_MAC80211 \
+        -e CONFIG_MAC80211_MESH \
+        # Ethernet
+        -e CONFIG_USB_RTL8150 \
+        -e CONFIG_USB_RTL8152 \
+        # Configuring the Kernel - Wifi (https://www.kali.org/docs/nethunter/nethunter-kernel-4-config-3/)
+        # Kernel Configuration cont.
+        # Wireless LAN
+        -e CONFIG_WLAN_VENDOR_ATH \
+        -e CONFIG_ATH9K_HTC \
+        -e CONFIG_CARL9170 \
+        -e CONFIG_ATH6KL \
+        -e CONFIG_ATH6KL_USB \
+        -e CONFIG_WLAN_VENDOR_MEDIATEK \
+        -e CONFIG_MT7601U \
+        -e CONFIG_WLAN_VENDOR_RALINK \
+        -e CONFIG_RT2X00 \
+        -e CONFIG_RT2500USB \
+        -e CONFIG_RT73USB \
+        -e CONFIG_RT2800USB \
+        -e CONFIG_RT2800USB_RT33XX \
+        -e CONFIG_RT2800USB_RT35XX \
+        -e CONFIG_RT2800USB_RT3573 \
+        -e CONFIG_RT2800USB_RT53XX \
+        -e CONFIG_RT2800USB_RT55XX \
+        -e CONFIG_RT2800USB_UNKNOWN \
+        -e CONFIG_WLAN_VENDOR_REALTEK \
+        -e CONFIG_RTL8187 \
+        -e CONFIG_RTL_CARDS \
+        -e CONFIG_RTL8192CU \
+        -e CONFIG_RTL8XXXU_UNTESTED \
+        -e CONFIG_WLAN_VENDOR_ZYDAS \
+        -e CONFIG_USB_ZD1201 \
+        -e CONFIG_ZD1211RW \
+        -e CONFIG_USB_NET_RNDIS_WLAN \
+        # Configuring the Kernel - SDR (https://www.kali.org/docs/nethunter/nethunter-kernel-5-config-4/)
+        # Configuring the Kernel - SDR
+        # Kernel Configuration
+        # SDR
+        -e CONFIG_MEDIA_DIGITAL_TV_SUPPORT \
+        -e CONFIG_MEDIA_SDR_SUPPORT \
+        -e CONFIG_USB_AIRSPY \
+        -e CONFIG_USB_HACKRF \
+        -e USB_MSI2500 \
+        -d CONFIG_MEDIA_SUBDRV_AUTOSELECT \
+        -e CONFIG_DVB_RTL2830 \
+        -e CONFIG_DVB_RTL2832 \
+        -e CONFIG_DVB_RTL2832_SDR \
+        -e CONFIG_DVB_SI2168 \
+        -e CONFIG_DVB_ZD1301_DEMOD \
+        # Configuring the 4.x Kernel - USB (https://www.kali.org/docs/nethunter/nethunter-kernel-7-config-6/)
+        # Configuring the 4.x Kernel - USB
+        # Kernel Configuration cont.
+        # USB Modem
+        -e CONFIG_USB_ACM \
+        # USB Gadget support
+        -e CONFIG_USB_CONFIGFS_SERIAL \
+        -e CONFIG_USB_CONFIGFS_ACM \
+        -e CONFIG_USB_CONFIGFS_OBEX \
+        -e CONFIG_USB_CONFIGFS_NCM \
+        -e CONFIG_USB_CONFIGFS_ECM \
+        -e CONFIG_USB_CONFIGFS_ECM_SUBSET \
+        -e CONFIG_USB_CONFIGFS_RNDIS \
+        -e CONFIG_USB_CONFIGFS_EEM \
+        -e CONFIG_USB_CONFIGFS_MASS_STORAGE \
+        -e CONFIG_USB_CONFIGFS_F_HID \
+        # Configuring the Kernel - NFS (https://www.kali.org/docs/nethunter/nethunter-kernel-8-config-7/)
+        -e CONFIG_NETWORK_FILESYSTEMS \
+        -e CONFIG_NFS_V2 \
+        -e CONFIG_NFS_V3 \
+        -e CONFIG_NFS_V4 \
+        -e CONFIG_NFSD \
+        -e CONFIG_NFSD_V3 \
+        -e CONFIG_NFSD_V4
+
 
     - name: Remove ANDROID_PARANOID_NETWORK
       if: env.Remove_ANDROID_PARANOID_NETWORK == 'true'
@@ -226,7 +329,9 @@ jobs:
       run: |
         cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
         echo "------------ Patches for Remove Kernel Validation ------------------------------------------"
-        scripts/config --file arch/${{ env.ARCH }}/configs/${{ env.KERNEL_CONFIG }} -e CONFIG_MODULE_FORCE_LOAD -d CONFIG_MODULE_SIG_FORCE
+        scripts/config --file arch/${{ env.ARCH }}/configs/${{ env.KERNEL_CONFIG }} \
+        -e CONFIG_MODULE_FORCE_LOAD \
+        -d CONFIG_MODULE_SIG_FORCE
         patch -p1 < kernel_patches/patches/${{ env.Kernel_Version }}/module.patch
         #https://blog.xzr.moe/archives/236/
         #disable CONFIG_MODVERSIONS is useless
