@@ -199,6 +199,7 @@ jobs:
     - name: Apply patches for docker and lxc
       if: env.Docker_LXC_Patches == 'true'
       run: |
+        cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
         echo "------------ Patches for lxc and docker ----------------------------------------------------"
         patch -p1 < kernel_patches/patches/${{ env.Kernel_Version }}/cgroup.patch
         patch -p1 < kernel_patches/patches/${{ env.Kernel_Version }}/xt_qtaguid.patch
