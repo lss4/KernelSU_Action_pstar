@@ -62,6 +62,7 @@ jobs:
         echo "Remove_Warning=$(cat $CONFIG_ENV | grep -w "Remove_Warning" | head -n 1 | cut -d "=" -f 2)" >> $GITHUB_ENV
         echo "Docker_LXC_Patches=$(cat $CONFIG_ENV | grep -w "Remove_Warning" | head -n 1 | cut -d "=" -f 2)" >> $GITHUB_ENV
         echo "Remove_ANDROID_PARANOID_NETWORK=$(cat $CONFIG_ENV | grep -w "Remove_Warning" | head -n 1 | cut -d "=" -f 2)" >> $GITHUB_ENV
+        echo "Add_Kali_Nethunter_Patches=$(cat $CONFIG_ENV | grep -w "Remove_Warning" | head -n 1 | cut -d "=" -f 2)" >> $GITHUB_ENV
 
     - name: Set swap to 10G
       uses: pierotofy/set-swap-space@master
@@ -203,6 +204,15 @@ jobs:
         echo "------------ Patches for lxc and docker ----------------------------------------------------"
         patch -p1 < kernel_patches/patches/${{ env.Kernel_Version }}/cgroup.patch
         patch -p1 < kernel_patches/patches/${{ env.Kernel_Version }}/xt_qtaguid.patch
+
+    - name: Apply patches for kali nethunter
+      if: env.Add_Kali_Nethunter_Patches == 'true'
+      run: |
+        cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
+        echo "------------ Download Patches --------------------------------------------------------------"
+        git clone https://gitlab.com/kalilinux/nethunter/build-scripts/kali-nethunter-kernel.git --depth=1
+        echo "------------ Patches for kali nethunter ----------------------------------------------------"
+        find kali-nethunter-kernel/patches/${{ env.Kernel_Version }}/  -type f -name "*.patch" -exec  sh -c 'git apply {}' \;
 
     - name: Remove ANDROID_PARANOID_NETWORK
       if: env.Remove_ANDROID_PARANOID_NETWORK == 'true'
