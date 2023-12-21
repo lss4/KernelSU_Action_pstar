@@ -207,6 +207,7 @@ jobs:
     - name: Remove ANDROID_PARANOID_NETWORK
       if: env.Remove_ANDROID_PARANOID_NETWORK == 'true'
       run: |
+        cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
         echo "------------ Remove ANDROID_PARANOID_NETWORK -----------------------------------------------"
         scripts/config --file arch/${{ env.ARCH }}/configs/${{ env.KERNEL_CONFIG }} -d ANDROID_PARANOID_NETWORK
 
