@@ -60,9 +60,9 @@ jobs:
         echo "Kernel_Version=$(cat $CONFIG_ENV | grep -w "Kernel_Version" | head -n 1 | cut -d "=" -f 2)" >> $GITHUB_ENV
         echo "Remove_Kernel_Validation=$(cat $CONFIG_ENV | grep -w "Remove_Kernel_Validation" | head -n 1 | cut -d "=" -f 2)" >> $GITHUB_ENV
         echo "Remove_Warning=$(cat $CONFIG_ENV | grep -w "Remove_Warning" | head -n 1 | cut -d "=" -f 2)" >> $GITHUB_ENV
-        echo "Docker_LXC_Patches=$(cat $CONFIG_ENV | grep -w "Remove_Warning" | head -n 1 | cut -d "=" -f 2)" >> $GITHUB_ENV
-        echo "Remove_ANDROID_PARANOID_NETWORK=$(cat $CONFIG_ENV | grep -w "Remove_Warning" | head -n 1 | cut -d "=" -f 2)" >> $GITHUB_ENV
-        echo "Add_Kali_Nethunter_Patches=$(cat $CONFIG_ENV | grep -w "Remove_Warning" | head -n 1 | cut -d "=" -f 2)" >> $GITHUB_ENV
+        echo "Docker_LXC_Patches=$(cat $CONFIG_ENV | grep -w "Docker_LXC_Patches" | head -n 1 | cut -d "=" -f 2)" >> $GITHUB_ENV
+        echo "Remove_ANDROID_PARANOID_NETWORK=$(cat $CONFIG_ENV | grep -w "Remove_ANDROID_PARANOID_NETWORK" | head -n 1 | cut -d "=" -f 2)" >> $GITHUB_ENV
+        echo "Add_Kali_Nethunter_Patches=$(cat $CONFIG_ENV | grep -w "Add_Kali_Nethunter_Patches" | head -n 1 | cut -d "=" -f 2)" >> $GITHUB_ENV
 
     - name: Set swap to 10G
       uses: pierotofy/set-swap-space@master
