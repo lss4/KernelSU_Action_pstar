@@ -252,10 +252,10 @@ jobs:
         -e CONFIG_ANDROID_BINDER_IPC
 
         # MAC80211
-        scripts/config --file arch/${{ env.ARCH }}/configs/${{ env.KERNEL_CONFIG }} \
-        -e CONFIG_CFG80211_WEXT \
-        -e CONFIG_MAC80211 \
-        -e CONFIG_MAC80211_MESH
+        #scripts/config --file arch/${{ env.ARCH }}/configs/${{ env.KERNEL_CONFIG }} \
+        #-e CONFIG_CFG80211_WEXT \
+        #-e CONFIG_MAC80211 \
+        #-e CONFIG_MAC80211_MESH
 
         # Ethernet
         scripts/config --file arch/${{ env.ARCH }}/configs/${{ env.KERNEL_CONFIG }} \
