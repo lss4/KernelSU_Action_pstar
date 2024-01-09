@@ -183,7 +183,7 @@ jobs:
     - name: Generate Kernel Build Config
       if: env.Generate_Build_Config == 'true'
       run: |
-        cd $GITHUB_WORKSPACE/kernel_workspace
+        cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
         cat arch/arm64/configs/vendor/kona-perf_defconfig \
         arch/arm64/configs/vendor/ext_config/moto-kona.config \
         arch/arm64/configs/vendor/ext_config/pstar-default.config \
