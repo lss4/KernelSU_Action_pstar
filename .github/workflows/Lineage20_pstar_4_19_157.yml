@@ -62,6 +62,7 @@ jobs:
         echo "KSU_EXPECTED_HASH=$(cat $CONFIG_ENV | grep -w "KSU_EXPECTED_HASH" | head -n 1 | cut -d "=" -f 2)" >> $GITHUB_ENV
         echo "IMPORT_DOCKER=$(cat $CONFIG_ENV | grep -w "IMPORT_DOCKER" | head -n 1 | cut -d "=" -f 2)" >> $GITHUB_ENV
         echo "Kernel_Version=$(cat $CONFIG_ENV | grep -w "Kernel_Version" | head -n 1 | cut -d "=" -f 2)" >> $GITHUB_ENV
+        echo "Kernel_Extra_Version=$(cat $CONFIG_ENV | grep -w "Kernel_Extra_Version" | head -n 1 | cut -d "=" -f 2)" >> $GITHUB_ENV
         echo "Remove_Kernel_Validation=$(cat $CONFIG_ENV | grep -w "Remove_Kernel_Validation" | head -n 1 | cut -d "=" -f 2)" >> $GITHUB_ENV
         echo "Remove_Warning=$(cat $CONFIG_ENV | grep -w "Remove_Warning" | head -n 1 | cut -d "=" -f 2)" >> $GITHUB_ENV
         echo "Docker_LXC_Patches=$(cat $CONFIG_ENV | grep -w "Docker_LXC_Patches" | head -n 1 | cut -d "=" -f 2)" >> $GITHUB_ENV
@@ -217,8 +218,8 @@ jobs:
       run: |
         cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
         echo "------------ Patches for lxc and docker ----------------------------------------------------"
-        patch -p1 < kernel_patches/patches/${{ env.Kernel_Version }}/cgroup.patch
-        patch -p1 < kernel_patches/patches/${{ env.Kernel_Version }}/xt_qtaguid.patch
+        patch -p1 < kernel_patches/patches/${{ env.Kernel_Extra_Version }}/cgroup.patch
+        patch -p1 < kernel_patches/patches/${{ env.Kernel_Extra_Version }}/xt_qtaguid.patch
 
     - name: Apply patches for kali nethunter
       if: env.Add_Kali_Nethunter_Patches == 'true'
@@ -372,7 +373,7 @@ jobs:
         scripts/config --file arch/${{ env.ARCH }}/configs/${{ env.KERNEL_CONFIG }} \
         -e CONFIG_MODULE_FORCE_LOAD \
         -d CONFIG_MODULE_SIG_FORCE
-        patch -p1 < kernel_patches/patches/${{ env.Kernel_Version }}/module.patch
+        patch -p1 < kernel_patches/patches/${{ env.Kernel_Extra_Version }}/module.patch
         #https://blog.xzr.moe/archives/236/
         #disable CONFIG_MODVERSIONS is useless
 
@@ -381,7 +382,7 @@ jobs:
       run: |
         cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
         echo "------------ Patches for remove warning ----------------------------------------------------"
-        patch -p1 < kernel_patches/patches/${{ env.Kernel_Version }}/nowarnings.patch
+        patch -p1 < kernel_patches/patches/${{ env.Kernel_Extra_Version }}/nowarnings.patch
         #scripts/config --file arch/${{ env.ARCH }}/configs/${{ env.KERNEL_CONFIG }} -d CONFIG_CC_WERROR -e CONFIG_SECTION_MISMATCH_WARN_ONLY --set-val CONFIG_FRAME_WARN 4096
 
     - name: Download source boot image
