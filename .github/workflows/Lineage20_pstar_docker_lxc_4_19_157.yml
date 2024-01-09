@@ -179,6 +179,15 @@ jobs:
           echo "LOCALVERSION=" >> $GITHUB_ENV
         fi
 
+    - name: Generate Kernel Build Config
+      run: |
+        cd $GITHUB_WORKSPACE/kernel_workspace
+        cat arch/arm64/configs/vendor/kona-perf_defconfig \
+        arch/arm64/configs/vendor/ext_config/moto-kona.config \
+        arch/arm64/configs/vendor/ext_config/pstar-default.config \
+        arch/arm64/configs/vendor/debugfs.config \
+        >> arch/${{ env.ARCH }}/configs/${{ env.KERNEL_CONFIG }}
+
     - name: Download Patches
       run: |
         cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
@@ -256,10 +265,10 @@ jobs:
         -e CONFIG_ANDROID_BINDER_IPC
 
         # MAC80211
-        scripts/config --file arch/${{ env.ARCH }}/configs/${{ env.KERNEL_CONFIG }} \
-        -e CONFIG_CFG80211_WEXT \
-        -e CONFIG_MAC80211 \
-        -e CONFIG_MAC80211_MESH
+        #scripts/config --file arch/${{ env.ARCH }}/configs/${{ env.KERNEL_CONFIG }} \
+        #-e CONFIG_CFG80211_WEXT \
+        #-e CONFIG_MAC80211 \
+        #-e CONFIG_MAC80211_MESH
 
         # Ethernet
         scripts/config --file arch/${{ env.ARCH }}/configs/${{ env.KERNEL_CONFIG }} \
@@ -269,34 +278,34 @@ jobs:
         # Configuring the Kernel - Wifi (https://www.kali.org/docs/nethunter/nethunter-kernel-4-config-3/)
         # Kernel Configuration cont.
         # Wireless LAN
-        scripts/config --file arch/${{ env.ARCH }}/configs/${{ env.KERNEL_CONFIG }} \
-        -e CONFIG_WLAN_VENDOR_ATH \
-        -e CONFIG_ATH9K_HTC \
-        -e CONFIG_CARL9170 \
-        -e CONFIG_ATH6KL \
-        -e CONFIG_ATH6KL_USB \
-        -e CONFIG_WLAN_VENDOR_MEDIATEK \
-        -e CONFIG_MT7601U \
-        -e CONFIG_WLAN_VENDOR_RALINK \
-        -e CONFIG_RT2X00 \
-        -e CONFIG_RT2500USB \
-        -e CONFIG_RT73USB \
-        -e CONFIG_RT2800USB \
-        -e CONFIG_RT2800USB_RT33XX \
-        -e CONFIG_RT2800USB_RT35XX \
-        -e CONFIG_RT2800USB_RT3573 \
-        -e CONFIG_RT2800USB_RT53XX \
-        -e CONFIG_RT2800USB_RT55XX \
-        -e CONFIG_RT2800USB_UNKNOWN \
-        -e CONFIG_WLAN_VENDOR_REALTEK \
-        -e CONFIG_RTL8187 \
-        -e CONFIG_RTL_CARDS \
-        -e CONFIG_RTL8192CU \
-        -e CONFIG_RTL8XXXU_UNTESTED \
-        -e CONFIG_WLAN_VENDOR_ZYDAS \
-        -e CONFIG_USB_ZD1201 \
-        -e CONFIG_ZD1211RW \
-        -e CONFIG_USB_NET_RNDIS_WLAN
+        #scripts/config --file arch/${{ env.ARCH }}/configs/${{ env.KERNEL_CONFIG }} \
+        #-e CONFIG_WLAN_VENDOR_ATH \
+        #-e CONFIG_ATH9K_HTC \
+        #-e CONFIG_CARL9170 \
+        #-e CONFIG_ATH6KL \
+        #-e CONFIG_ATH6KL_USB \
+        #-e CONFIG_WLAN_VENDOR_MEDIATEK \
+        #-e CONFIG_MT7601U \
+        #-e CONFIG_WLAN_VENDOR_RALINK \
+        #-e CONFIG_RT2X00 \
+        #-e CONFIG_RT2500USB \
+        #-e CONFIG_RT73USB \
+        #-e CONFIG_RT2800USB \
+        #-e CONFIG_RT2800USB_RT33XX \
+        #-e CONFIG_RT2800USB_RT35XX \
+        #-e CONFIG_RT2800USB_RT3573 \
+        #-e CONFIG_RT2800USB_RT53XX \
+        #-e CONFIG_RT2800USB_RT55XX \
+        #-e CONFIG_RT2800USB_UNKNOWN \
+        #-e CONFIG_WLAN_VENDOR_REALTEK \
+        #-e CONFIG_RTL8187 \
+        #-e CONFIG_RTL_CARDS \
+        #-e CONFIG_RTL8192CU \
+        #-e CONFIG_RTL8XXXU_UNTESTED \
+        #-e CONFIG_WLAN_VENDOR_ZYDAS \
+        #-e CONFIG_USB_ZD1201 \
+        #-e CONFIG_ZD1211RW \
+        #-e CONFIG_USB_NET_RNDIS_WLAN
 
         # Configuring the Kernel - SDR (https://www.kali.org/docs/nethunter/nethunter-kernel-5-config-4/)
         # Configuring the Kernel - SDR

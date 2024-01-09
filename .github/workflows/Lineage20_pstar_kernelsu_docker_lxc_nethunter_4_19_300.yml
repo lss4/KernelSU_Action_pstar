@@ -179,6 +179,15 @@ jobs:
           echo "LOCALVERSION=" >> $GITHUB_ENV
         fi
 
+    - name: Generate Kernel Build Config
+      run: |
+        cd $GITHUB_WORKSPACE/kernel_workspace
+        cat arch/arm64/configs/vendor/kona-perf_defconfig \
+        arch/arm64/configs/vendor/ext_config/moto-kona.config \
+        arch/arm64/configs/vendor/ext_config/pstar-default.config \
+        arch/arm64/configs/vendor/debugfs.config \
+        >> arch/${{ env.ARCH }}/configs/${{ env.KERNEL_CONFIG }}
+
     - name: Download Patches
       run: |
         cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
