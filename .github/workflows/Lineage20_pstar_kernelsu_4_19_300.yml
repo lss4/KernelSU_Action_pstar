@@ -67,6 +67,7 @@ jobs:
         echo "Docker_LXC_Patches=$(cat $CONFIG_ENV | grep -w "Docker_LXC_Patches" | head -n 1 | cut -d "=" -f 2)" >> $GITHUB_ENV
         echo "Remove_ANDROID_PARANOID_NETWORK=$(cat $CONFIG_ENV | grep -w "Remove_ANDROID_PARANOID_NETWORK" | head -n 1 | cut -d "=" -f 2)" >> $GITHUB_ENV
         echo "Add_Kali_Nethunter_Patches=$(cat $CONFIG_ENV | grep -w "Add_Kali_Nethunter_Patches" | head -n 1 | cut -d "=" -f 2)" >> $GITHUB_ENV
+        echo "Generate_Build_Config=$(cat $CONFIG_ENV | grep -w "Generate_Build_Config" | head -n 1 | cut -d "=" -f 2)" >> $GITHUB_ENV
 
     - name: Set swap to 10G
       uses: pierotofy/set-swap-space@master
@@ -180,6 +181,7 @@ jobs:
         fi
 
     - name: Generate Kernel Build Config
+      if: env.Generate_Build_Config == 'true'
       run: |
         cd $GITHUB_WORKSPACE/kernel_workspace
         cat arch/arm64/configs/vendor/kona-perf_defconfig \
