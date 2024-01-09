@@ -1,4 +1,4 @@
-name: (pstar) (LineageOS 20) Build Kernel
+name: (pstar) (LineageOS 20) (4.19.157) Build Kernel
 on:
   watch:
     types: [started]

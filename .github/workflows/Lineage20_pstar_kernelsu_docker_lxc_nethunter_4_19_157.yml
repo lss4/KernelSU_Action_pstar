@@ -1,4 +1,4 @@
-name: (pstar) (LineageOS 20) (KernelSU docker lxc nethunter) Build Kernel
+name: (pstar) (LineageOS 20) (4.19.157) (KernelSU docker lxc nethunter) Build Kernel
 on:
   watch:
     types: [started]
