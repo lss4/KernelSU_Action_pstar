@@ -195,7 +195,7 @@ jobs:
       run: |
         cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
         echo "------------ Download Patches --------------------------------------------------------------"
-        git clone https://github.com/AndroidAppsUsedByMyself/kernel_patches.git --depth=1
+        git clone https://github.com/lss4/kernel_patches.git --depth=1
 
     - name: Import Docker Config
       if: env.IMPORT_DOCKER == 'true'
