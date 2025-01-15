@@ -378,6 +378,21 @@ jobs:
         #https://blog.xzr.moe/archives/236/
         #disable CONFIG_MODVERSIONS is useless
 
+    - name: Backport cred commit required by kernelsu
+      if: env.ENABLE_KERNELSU == 'true'
+      run: |
+        cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
+        echo "------------ Patches for backport cred commit required by kernelsu ----------------------------------------------------"
+        git apply kernel_patches/patches/${{ env.Kernel_Extra_Version }}/0001-Reapply-cred-switch-to-using-atomic_long_t.patch
+        git apply kernel_patches/patches/${{ env.Kernel_Extra_Version }}/0002-BACKPORT-cred-add-get_cred_rcu.patch
+
+    - name: Backport path_umount
+      if: env.ENABLE_KERNELSU == 'true'
+      run: |
+        cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
+        echo "------------ Patches for backport path_umount ----------------------------------------------------"
+        patch -p1 < kernel_patches/patches/${{ env.Kernel_Extra_Version }}/path_umount_backport.patch
+
     - name: Remove Warning
       if: env.Remove_Warning == 'true'
       run: |
@@ -407,11 +422,8 @@ jobs:
       if: env.ENABLE_KERNELSU == 'true'
       run: |
         cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
-        patch -p1 < $GITHUB_WORKSPACE/kernel_workspace/android-kernel/susfs4ksu/kernel_patches/50_add_susfs_in_kernel-${{ env.Kernel_Version }}.patch
-        cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel/KernelSU
-        patch -p1 < $GITHUB_WORKSPACE/kernel_workspace/android-kernel/susfs4ksu/kernel_patches/KernelSU/10_enable_susfs_for_ksu.patch
-        cp $GITHUB_WORKSPACE/kernel_workspace/android-kernel/susfs4ksu/kernel_patches/fs/susfs.c $GITHUB_WORKSPACE/kernel_workspace/android-kernel/fs/
-        cp $GITHUB_WORKSPACE/kernel_workspace/android-kernel/susfs4ksu/kernel_patches/include/linux/susfs.h $GITHUB_WORKSPACE/kernel_workspace/android-kernel/include/linux/
+        cp $GITHUB_WORKSPACE/kernel_workspace/android-kernel/susfs4ksu/kernel_patches/fs/* $GITHUB_WORKSPACE/kernel_workspace/android-kernel/fs/
+        cp $GITHUB_WORKSPACE/kernel_workspace/android-kernel/susfs4ksu/kernel_patches/include/linux/* $GITHUB_WORKSPACE/kernel_workspace/android-kernel/include/linux/
 
     - name: Setup susfs4ksu workaround
       if: env.ENABLE_KERNELSU == 'true'
