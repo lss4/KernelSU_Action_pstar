@@ -406,10 +406,6 @@ jobs:
     - name: Setup susfs4ksu
       if: env.ENABLE_KERNELSU == 'true'
       run: |
-        cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
-        patch -p1 < $GITHUB_WORKSPACE/kernel_workspace/android-kernel/susfs4ksu/kernel_patches/50_add_susfs_in_kernel-${{ env.Kernel_Version }}.patch
-        cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel/KernelSU
-        patch -p1 < $GITHUB_WORKSPACE/kernel_workspace/android-kernel/susfs4ksu/kernel_patches/KernelSU/10_enable_susfs_for_ksu.patch
         cp $GITHUB_WORKSPACE/kernel_workspace/android-kernel/susfs4ksu/kernel_patches/fs/susfs.c $GITHUB_WORKSPACE/kernel_workspace/android-kernel/fs/
         cp $GITHUB_WORKSPACE/kernel_workspace/android-kernel/susfs4ksu/kernel_patches/include/linux/susfs.h $GITHUB_WORKSPACE/kernel_workspace/android-kernel/include/linux/
 
